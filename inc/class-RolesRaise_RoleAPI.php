@@ -6,9 +6,9 @@
 
 
 
-if ( ! interface_exists( 'Role_API' ) ) :
+if ( ! interface_exists( 'IRole_API' ) ) :
 
-interface Role_API {
+interface IRole_API {
 
 	function add_role( $slug , $name );
 	function remove_role( $slug );
@@ -25,11 +25,46 @@ interface Role_API {
 
 }
 endif;
+if ( ! class_exists( 'Role_API' ) ) :
+
+abstract class Role_API {
+
+	function raw_readable_cap( $cap ) {
+		return ucfirst( str_replace('_', ' ', $cap));
+	}
+	function readable_cap( $cap ) {
+		return _x( $this->raw_readable_cap( $cap ) , 'Capability name' ,'roles-raise');
+	}
+
+	function get_all_caps() {
+		$existing_caps = array();
+		$roles = $this->get_roles();
+		foreach ($roles as $role => $role_array ) {
+			foreach ( $role_array['capabilities'] as $cap => $permit ) {
+				if ( ! isset( $existing_caps[$cap] ) )
+					$existing_caps[$cap] = array();
+			
+				$existing_caps[$cap][$role] = isset( $role_array['capabilities'][$cap] ) && $permit;
+			}
+		}
+		return $existing_caps;
+	}
+	
+	function is_wp_native_cap( $cap ) {
+		if ( is_multisite() )
+			$caps = get_site_option( 'wp_native_caps' );
+		else 
+			$caps = get_option( 'wp_native_caps' );
+		return in_array( $cap , $caps );
+	}
+
+}
+endif;
 
 
 if ( ! class_exists( 'Network_Role_API' ) ) :
 
-class Network_Role_API implements Role_API {
+class Network_Role_API extends Role_API implements IRole_API {
 	private $_roles;
 	private $_role_key;
 	
@@ -84,9 +119,11 @@ class Network_Role_API implements Role_API {
 	}
 	
 	
+	
 	private function _store( ) {
 		update_site_option( $this->_role_key , $this->_roles );
 	}
+	
 	
 }
 endif;
@@ -94,7 +131,7 @@ endif;
 
 if ( ! class_exists( 'Blog_Role_API' ) ) :
 
-class Blog_Role_API implements Role_API {
+class Blog_Role_API extends Role_API implements IRole_API {
 	
 	function has_role( $slug ) {
 		return ! is_null( get_role( $slug ) );
@@ -141,8 +178,6 @@ class Blog_Role_API implements Role_API {
 	function update_default_role( $slug ) {
 		update_option( 'default_role' , $slug );
 	}
-
-	
 	
 	
 	function restore_roles() {

@@ -26,8 +26,11 @@ require_once( dirname(__FILE__). '/inc/class-RolesRaise_UI.php' );
 
 RolesRaise_Core::init();
 
-// instantinate RolesRaise_UI
+register_activation_hook( __FILE__ , array( 'RolesRaise_Core' , 'plugin_activation' ) );
+register_uninstall_hook( __FILE__ , array( 'RolesRaise_Core' , 'plugin_uninstall' ) );
 
+
+// instantinate RolesRaise_UI
 if ( is_multisite() && is_network_admin() && is_rolesraise_active_for_network( ) )
 	$rolesraise_ui = new RolesRaise_NetworkUI();
 else 

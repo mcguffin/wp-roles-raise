@@ -63,40 +63,44 @@ class RolesRaise_UI {
 	
 	public function get_cap_groups( ) {
 		global $wp_roles , $wpdb;
-		$existing_caps = array();
+		
+		$foreign_groupname = _x('Foreign Capabilities (maybe introduced by a plugin or theme)','Capability group','roles-raise');
+		$foreign_caps = array();
 		$resorted_existing_caps = array();
 		
 
-		$roles = $this->role_api->get_roles();
-
-		foreach ($roles as $role => $role_array ) {
-			foreach ( $role_array['capabilities'] as $cap => $permit ) {
-				if ( ! isset( $existing_caps[$cap] ) )
-					$existing_caps[$cap] = array();
-			
-				$existing_caps[$cap][$role] = isset( $role_array['capabilities'][$cap] ) && $permit;
-			}
-		}
+		
+		$existing_caps = $this->role_api->get_all_caps();
+		
+		
 		$cap_groups = array(
 			'/pages?$/' => __('Pages'),
 			'/posts?$/' => __('Posts'),
-			'/links?$/' => __('Links'),
+//			'/links?$/' => __('Links'), // just one cap in this section - skip it!
 			'/themes?/' => __('Themes'),
 			'/plugins?$/' => __('Plugins'),
 			'/(files?|uploads?)$/' => __('Files'),
 			'/users?$/' => __('Users'),
-			'(.*)' => __('Miscellaneous','roles-raise'),
+			'(.*)' => _x('Miscellaneous','Capability group','roles-raise'),
 		);
 		foreach ( $cap_groups as $regex => $groupname ) {
 			if ( ! isset($resorted_existing_caps[ $groupname ] ) )
 				$resorted_existing_caps[ $groupname ] = array();
 			foreach ( $existing_caps as $cap => $rolenames ) {
-				if ( preg_match( $regex , $cap ) ) {
-					$resorted_existing_caps[ $groupname ][ $cap ] = $rolenames;
-					unset($existing_caps[$cap]);
+				if ( $this->role_api->is_wp_native_cap( $cap ) ) {
+					if ( preg_match( $regex , $cap ) ) {
+						$resorted_existing_caps[ $groupname ][ $cap ] = $rolenames;
+						unset($existing_caps[$cap]);
+					}
+				} else {
+					$foreign_caps[ $cap ] = $rolenames;
 				}
 			}
 		}
+		
+		if ( (bool) $foreign_caps )
+			$resorted_existing_caps[ $foreign_groupname ] = $foreign_caps;
+		
 		return $resorted_existing_caps;
 	}
 	
@@ -318,6 +322,8 @@ class RolesRaise_UI {
 		?><input type="hidden" name="action" value="<?php echo $action ?>"  /><?php
 		
 		$odd = true;
+		$deprecated_caps = '';
+		
 		// capgroups: themes?, pages?, posts?, users?, uploads?, files?, links?
 		foreach ($roles as $role => $role_array ) {
 			?><input type="hidden" name="caps[<?php echo $role ?>][name]" value="<?php echo $role_array['name'] ?>" /><?php
@@ -336,8 +342,19 @@ class RolesRaise_UI {
 				?></tr><?php
 				$group_slug = sanitize_title( $groupname );
 				$this->print_roles_head( $group_slug );
-
+				
 				foreach ($caps as $cap => $cap_role_array ) {
+					
+					// deprecated caps. 
+					// We want to mess up as few as possible, so we just put the values in a hidden input and print them later. 
+					if ( strpos($cap,'level_') === 0 ) {
+						foreach ($roles as $role => $role_array ) {
+							$value = (int)( isset($cap_role_array[$role]) && $cap_role_array[$role] );
+							$deprecated_caps .= "<input type=\"hidden\" name=\"caps[$role][$cap]\" value=\"$value\"/>";
+						}
+						continue;
+					}
+					
 					if ( $odd ) {
 						?><tr><?php
 					} else {
@@ -346,9 +363,9 @@ class RolesRaise_UI {
 						?><td class="title cap-select"><?php
 							?><input id="<?php echo $cap ?>" class="<?php echo $cap ?>" type="checkbox" name="_dummy" value="" /> <?php
 							?><label for="<?php echo $cap ?>"><?php
-							$readable_cap = ucfirst( str_replace('_', ' ', $cap));
-
-							_ex( $readable_cap , 'capability' ,'roles-raise');
+							
+							echo $this->role_api->readable_cap( $cap );
+							
 							?></label><?php
 						?></td><?php
 					foreach ($roles as $role => $role_array ) {
@@ -367,6 +384,8 @@ class RolesRaise_UI {
 			?></tbody><?php
 		
 		?></table><?php
+		
+		echo $deprecated_caps;
 		
 		submit_button( __('Save Role Settings','roles-raise'), 'primary', 'save-caps' );
 		?></form><?php
@@ -596,7 +615,6 @@ if ( ! class_exists( 'RolesRaise_NetworkUI' ) ) :
 			
 				// style and script
 				add_action( 'load-users_page_default_roles' ,array( &$this , 'hookup_admin_head'));
-
 				add_action( 'roles_table_head' ,   array( &$this , 'print_select_default_role' ) , 10 , 2 );
 			}
 		}

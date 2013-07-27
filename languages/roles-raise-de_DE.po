@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP Roles Raise v0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-07-27 11:41:33+0000\n"
+"PO-Revision-Date: 2013-07-27 14:54:43+0000\n"
 "Last-Translator: admin <joern@flyingletters.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,200 +20,531 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: roles-raise.php:65
-#: roles-raise.php:236
+#: inc/class-RolesRaise_UI.php:27
+#: inc/class-RolesRaise_UI.php:60
 #@ roles-raise
 msgid "Manage Roles"
 msgstr "Rollen berabeiten"
 
-#: roles-raise.php:65
+#: inc/class-RolesRaise_UI.php:60
 #@ roles-raise
 msgid "Roles"
 msgstr "Rollen"
 
-#: roles-raise.php:68
-#: roles-raise.php:234
+#: inc/class-RolesRaise_UI.php:608
+#: inc/class-RolesRaise_UI.php:623
 #@ roles-raise
 msgid "Manage Default Roles"
 msgstr "Standard-Rollen bearbeiten"
 
-#: roles-raise.php:68
+#: inc/class-RolesRaise_UI.php:623
 #@ roles-raise
 msgid "Default Roles"
 msgstr "Standard-Rollen"
 
-#: roles-raise.php:108
+#: inc/class-RolesRaise_UI.php:77
 #@ default
 msgid "Pages"
 msgstr ""
 
-#: roles-raise.php:109
+#: inc/class-RolesRaise_UI.php:78
 #@ default
 msgid "Posts"
 msgstr ""
 
-#: roles-raise.php:110
+#: inc/class-RolesRaise_UI.php:79
 #@ default
 msgid "Links"
 msgstr ""
 
-#: roles-raise.php:111
+#: inc/class-RolesRaise_UI.php:80
 #@ default
 msgid "Themes"
 msgstr ""
 
-#: roles-raise.php:112
+#: inc/class-RolesRaise_UI.php:81
 #@ default
 msgid "Plugins"
 msgstr ""
 
-#: roles-raise.php:113
+#: inc/class-RolesRaise_UI.php:82
 #@ default
 msgid "Files"
 msgstr ""
 
-#: roles-raise.php:114
+#: inc/class-RolesRaise_UI.php:83
 #@ default
 msgid "Users"
 msgstr ""
 
-#: roles-raise.php:115
-#@ roles-raise
-msgid "Miscellaneous"
-msgstr "Verschiedenes"
-
-#: roles-raise.php:137
-#: roles-raise.php:143
+#: inc/class-RolesRaise_UI.php:114
+#: inc/class-RolesRaise_UI.php:122
 #@ roles-raise
 msgid "You are not allowed to do this."
 msgstr "Sie haben keine Erlaubnis, das zu tun!"
 
-#: roles-raise.php:247
+#: inc/class-RolesRaise_UI.php:222
 #@ default
 msgid "Tools"
 msgstr ""
 
-#: roles-raise.php:252
-#: roles-raise.php:280
+#: inc/class-RolesRaise_UI.php:227
+#: inc/class-RolesRaise_UI.php:255
 #@ roles-raise
 msgid "Create Role"
 msgstr "Neue Rolle erstellen"
 
-#: roles-raise.php:255
-#: roles-raise.php:304
+#: inc/class-RolesRaise_UI.php:230
+#: inc/class-RolesRaise_UI.php:279
 #@ roles-raise
 msgid "Delete Role"
 msgstr "Rolle löschen"
 
-#: roles-raise.php:259
-#: roles-raise.php:329
+#: inc/class-RolesRaise_UI.php:234
+#: inc/class-RolesRaise_UI.php:415
 #@ roles-raise
 msgid "Update User accounts"
 msgstr "Benutzerkonten aktualisieren"
 
-#: roles-raise.php:263
+#: inc/class-RolesRaise_UI.php:238
 #@ roles-raise
 msgid "Restore Default Roles"
 msgstr "Standard-Rollen wieder herstellen"
 
-#: roles-raise.php:274
-#: roles-raise.php:292
+#: inc/class-RolesRaise_UI.php:249
+#: inc/class-RolesRaise_UI.php:267
 #@ roles-raise
 msgid "Rolename:"
 msgstr "Rollenname:"
 
-#: roles-raise.php:296
+#: inc/class-RolesRaise_UI.php:271
 #@ roles-raise
 msgid "– Select Role –"
 msgstr "– Rolle auswählen –"
 
-#: roles-raise.php:321
+#: inc/class-RolesRaise_UI.php:407
 #@ roles-raise
 msgid "After changing a role, You should update all user accounts on your blog."
 msgstr "Nachdem Sie eine Rolle bearbeitet haben, sollten Sie die Benutzerkonten auf Ihrem Blog aktualisieren."
 
-#: roles-raise.php:325
+#: inc/class-RolesRaise_UI.php:411
 #@ roles-raise
 msgid "The right time is now."
 msgstr "Jetzt ist ein guter Zeitpunkt dafür."
 
-#: roles-raise.php:339
+#: inc/class-RolesRaise_UI.php:291
 #@ roles-raise
 msgid "<strong>Danger Zone:</strong> <br />All your changes will be lost! This is our last warning."
 msgstr "<strong>Gefahrenzone:</strong> <br />Alle Ihre Änderungen werden verloren gehen! Dies ist unsere letzte Warnung."
 
-#: roles-raise.php:345
+#: inc/class-RolesRaise_UI.php:297
 #@ roles-raise
 msgid "I know what I am doing."
 msgstr "Ich weiß was ich tue."
 
-#: roles-raise.php:350
+#: inc/class-RolesRaise_UI.php:302
 #@ roles-raise
 msgid "Restore Roles"
 msgstr "Rollen wiederherstellen"
 
-#: roles-raise.php:362
+#: inc/class-RolesRaise_UI.php:314
 #@ roles-raise
 msgid "Roles and Capabilities"
 msgstr "Rechte & Rollen"
 
-#: roles-raise.php:384
+#: inc/class-RolesRaise_UI.php:444
 #@ default
 msgid "New User Default Role"
 msgstr ""
 
-#: roles-raise.php:444
+#: inc/class-RolesRaise_UI.php:390
 #@ roles-raise
 msgid "Save Role Settings"
 msgstr "Einstellungen sichern"
 
-#: roles-raise.php:571
+#: inc/class-RolesRaise_UI.php:559
 #@ roles-raise
 msgid "Role created."
 msgstr "Neue Rolle erstellt"
 
-#: roles-raise.php:574
+#: inc/class-RolesRaise_UI.php:562
 #@ roles-raise
 msgid "Roles updated. Please remember to Update all user accounts as well."
 msgstr "Rollen wirden aktualisiert. Bitte denken Sie daran, die Benutzerkonten ebenfalls zu aktualisieren."
 
-#: roles-raise.php:577
+#: inc/class-RolesRaise_UI.php:565
 #@ roles-raise
 msgid "Role deleted."
 msgstr "Rolle gelöscht"
 
-#: roles-raise.php:580
+#: inc/class-RolesRaise_UI.php:568
 #@ roles-raise
 msgid "All Roles have been restored to default values."
 msgstr "Alle Rolllen wurden auf die Standardwerte zurückgesetzt."
 
-#: roles-raise.php:583
+#: inc/class-RolesRaise_UI.php:571
 #@ roles-raise
 msgid "User accounts have been updated."
 msgstr "Benutzerkonten wurden aktualisiert."
 
-#: roles-raise.php:587
+#: inc/class-RolesRaise_UI.php:575
 #@ roles-raise
 msgid "No Rolename specified."
 msgstr "Keine Rolle angegeben."
 
-#: roles-raise.php:590
+#: inc/class-RolesRaise_UI.php:578
 #@ roles-raise
 msgid "This Role already exists."
 msgstr "Eine Rolle dieses Namens gibt es schon."
 
-#: roles-raise.php:593
+#: inc/class-RolesRaise_UI.php:581
 #@ roles-raise
 msgid "Missing data."
 msgstr "Keine Daten empfangen."
 
-#: roles-raise.php:596
+#: inc/class-RolesRaise_UI.php:584
 #@ roles-raise
 msgid "You cannot delete the Adminstrator role."
 msgstr "Sie können die Administrator-Rolle nicht löschen."
 
-#: roles-raise.php:599
+#: inc/class-RolesRaise_UI.php:587
 #@ roles-raise
 msgid "This Role does not exist."
 msgstr "Diese Rolle existiert nicht."
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit pages"
+msgstr "Seiten bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit others pages"
+msgstr "Fremde Seiten bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit published pages"
+msgstr "Veröffentlichte Seite bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Publish pages"
+msgstr "Seiten veröffentlichen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete pages"
+msgstr "Seiten löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete others pages"
+msgstr "Fremde Seiten löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete published pages"
+msgstr "Veröffetntlichte Seiten löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete private pages"
+msgstr "Private Seiten löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit private pages"
+msgstr "Private Seiten bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Read private pages"
+msgstr "Private Seiten lesen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit posts"
+msgstr "Beiträge bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit others posts"
+msgstr "Fremde Beiträge bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit published posts"
+msgstr "Veröffentlichte Beiträge bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Publish posts"
+msgstr "Beiträge veröffentlichen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete posts"
+msgstr "Beiträge löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete others posts"
+msgstr "Fremde Beiträge löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete published posts"
+msgstr "Veröffentlichte Beiträge löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete private posts"
+msgstr "Private Beiträge löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit private posts"
+msgstr "Private Beiträge bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Read private posts"
+msgstr "Private Beiträge lesen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Manage links"
+msgstr "Links verwalten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Switch themes"
+msgstr "Theme wechseln"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit themes"
+msgstr "Theme bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Update themes"
+msgstr "Theme aktualsieren"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Install themes"
+msgstr "Teme installieren"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Activate plugins"
+msgstr "Plugins aktivieren"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit plugins"
+msgstr "Plugins bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Update plugins"
+msgstr "Plugins aktualisieren"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete plugins"
+msgstr "Plugins löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Install plugins"
+msgstr "Plugins installieren"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit files"
+msgstr "Dateien bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Upload files"
+msgstr "Medien hochladen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Unfiltered upload"
+msgstr "Ungefilterter Upload"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit users"
+msgstr "Benutzer bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete users"
+msgstr "Benutzer löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Create users"
+msgstr "Benutzer erstellen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Manage options"
+msgstr "Einstellungen verwalten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Moderate comments"
+msgstr "Kommentare moderieren"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Manage categories"
+msgstr "Kategorien verwalten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Import"
+msgstr "Import"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Unfiltered html"
+msgstr "Ungefiltertes HTML"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Read"
+msgstr "Lesen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 10"
+msgstr "Level 10"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 9"
+msgstr "Level 9"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 8"
+msgstr "Level 8"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 7"
+msgstr "Level 7"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 6"
+msgstr "Level 6"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 5"
+msgstr "Level 5"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 4"
+msgstr "Level 4"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 3"
+msgstr "Level 3"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 2"
+msgstr "Level 2"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 1"
+msgstr "Level 1"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Level 0"
+msgstr "Level 0"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit dashboard"
+msgstr "Dashboard bearbeiten"
+
+#: inc/class-RolesRaise_UI.php:67
+#@ roles-raise
+msgctxt "Capability group"
+msgid "Foreign Capabilities (maybe introduced by a plugin or theme)"
+msgstr "Fremde Rechte (evtl. durch ein Plugin oder Theme eingeführt)"
+
+#: inc/class-RolesRaise_UI.php:84
+#@ roles-raise
+msgctxt "Capability group"
+msgid "Miscellaneous"
+msgstr "Verschiedene"
 
