@@ -75,11 +75,11 @@ class RolesRaise_UI {
 		
 		$cap_groups = array(
 			'/pages?$/' => __('Pages'),
-			'/posts?$/' => __('Posts'),
+			'/(posts?|comments?|categories?)$/' => __('Posts'),
 //			'/links?$/' => __('Links'), // just one cap in this section - skip it!
 			'/themes?/' => __('Themes'),
 			'/plugins?$/' => __('Plugins'),
-			'/(files?|uploads?)$/' => __('Files'),
+			'/(files?|uploads?)$/' => __('Files','Capability group','roles-raise'),
 			'/users?$/' => __('Users'),
 			'(.*)' => _x('Miscellaneous','Capability group','roles-raise'),
 		);

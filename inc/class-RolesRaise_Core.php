@@ -30,11 +30,11 @@ class RolesRaise_Core {
 		$matches = array();
 		$wp_schema_file = file_get_contents( ABSPATH . '/wp-admin/includes/schema.php' );
 		preg_match_all( '/add_cap\(\s?(\'|")([a-z0-9_]+)\1\s?\)/' , $wp_schema_file , $matches );
-		
+		$native_caps = array_unique( $matches[2] );
 		if ( is_multisite() )
-			update_site_option( 'wp_native_caps' , array_unique($matches[2]) );
+			update_site_option( 'wp_native_caps' , $native_caps );
 		else
-			update_option( 'wp_native_caps' , array_unique($matches[2]) );
+			update_option( 'wp_native_caps' , $native_caps );
 		
 		
 		
@@ -45,8 +45,8 @@ class RolesRaise_Core {
 			$handle = fopen($langfile,'w');
 			fwrite($handle,"<?php\r\r");
 			fwrite($handle,"// Auto genereated capability names prepared for l18n.\r\r");
-			$caps = array_keys($role_api->get_all_caps());
-			foreach ( $caps as $cap ) {
+//			$caps = array_keys($role_api->get_all_caps());
+			foreach ( $native_caps as $cap ) {
 				if ( $role_api->is_wp_native_cap( $cap ) ) {
 					$readable_cap = $role_api->raw_readable_cap( $cap );
 					fwrite( $handle , "_x( '$readable_cap' , 'Capability name' ,'roles-raise');\r" );
@@ -57,7 +57,8 @@ class RolesRaise_Core {
 		}
 		
 	}
-
+	static function plugin_deactivation() {
+	}
 	static function plugin_uninstall() {
 		if ( is_multisite() ) {
 			delete_site_option( 'wp_native_caps' );
@@ -67,8 +68,6 @@ class RolesRaise_Core {
 			$role_api = new Blog_Role_API();
 		}
 		$role_api->restore_roles();
-		
-		
 	}
 
 	

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP Roles Raise v0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-07-27 14:54:43+0000\n"
+"PO-Revision-Date: 2013-07-27 16:29:06+0000\n"
 "Last-Translator: admin <joern@flyingletters.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -50,11 +50,6 @@ msgstr ""
 #: inc/class-RolesRaise_UI.php:78
 #@ default
 msgid "Posts"
-msgstr ""
-
-#: inc/class-RolesRaise_UI.php:79
-#@ default
-msgid "Links"
 msgstr ""
 
 #: inc/class-RolesRaise_UI.php:80
@@ -450,7 +445,7 @@ msgstr "Kategorien verwalten"
 #@ roles-raise
 msgctxt "Capability name"
 msgid "Import"
-msgstr "Import"
+msgstr "Daten Importieren"
 
 #: capnames.php:1
 #@ roles-raise
@@ -547,4 +542,52 @@ msgstr "Fremde Rechte (evtl. durch ein Plugin oder Theme eingeführt)"
 msgctxt "Capability group"
 msgid "Miscellaneous"
 msgstr "Verschiedene"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Update core"
+msgstr "System-Update"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "List users"
+msgstr "Benutzer auflisten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Remove users"
+msgstr "Benutzer löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Add users"
+msgstr "Benutzer hinzufügen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Promote users"
+msgstr "Benutzer-Rollen vergeben"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Edit theme options"
+msgstr "Theme-Einstellungen bearbeiten"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Delete themes"
+msgstr "Themes löschen"
+
+#: capnames.php:1
+#@ roles-raise
+msgctxt "Capability name"
+msgid "Export"
+msgstr "Daten Exportieren"
 

@@ -49,13 +49,14 @@ abstract class Role_API {
 		}
 		return $existing_caps;
 	}
-	
-	function is_wp_native_cap( $cap ) {
+	function get_native_caps() {
 		if ( is_multisite() )
-			$caps = get_site_option( 'wp_native_caps' );
+			return get_site_option( 'wp_native_caps' );
 		else 
-			$caps = get_option( 'wp_native_caps' );
-		return in_array( $cap , $caps );
+			return get_option( 'wp_native_caps' );
+	}
+	function is_wp_native_cap( $cap ) {
+		return in_array( $cap , $this->get_native_caps() );
 	}
 
 }
@@ -193,12 +194,21 @@ class Blog_Role_API extends Role_API implements IRole_API {
 		foreach ($this->get_roles() as $slug => $role )
 			$this->remove_role( $slug );
 		
+		// restore roles from backup...
 		foreach ( $restore_roles as $slug => $role )
 			$this->add_role( $slug , $role['name'] );
-		
+
 		$this->update_roles($restore_roles);
+
 		
 		update_option( 'default_role' , $restore_default_role );
+	}
+	function restore_native_roles() {
+		// ...or use WP-code?
+		require_once ABSPATH . '/wp-admin/includes/schema.php';
+		populate_roles();
+
+		update_option( 'default_role' , 'subscriber' );
 	}
 	function backup_default_roles() {
 		// store native wp
