@@ -1,0 +1,219 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Roles Raise v0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-07-27 11:41:33+0000\n"
+"Last-Translator: admin <joern@flyingletters.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: roles-raise.php:65
+#: roles-raise.php:236
+#@ roles-raise
+msgid "Manage Roles"
+msgstr "Rollen berabeiten"
+
+#: roles-raise.php:65
+#@ roles-raise
+msgid "Roles"
+msgstr "Rollen"
+
+#: roles-raise.php:68
+#: roles-raise.php:234
+#@ roles-raise
+msgid "Manage Default Roles"
+msgstr "Standard-Rollen bearbeiten"
+
+#: roles-raise.php:68
+#@ roles-raise
+msgid "Default Roles"
+msgstr "Standard-Rollen"
+
+#: roles-raise.php:108
+#@ default
+msgid "Pages"
+msgstr ""
+
+#: roles-raise.php:109
+#@ default
+msgid "Posts"
+msgstr ""
+
+#: roles-raise.php:110
+#@ default
+msgid "Links"
+msgstr ""
+
+#: roles-raise.php:111
+#@ default
+msgid "Themes"
+msgstr ""
+
+#: roles-raise.php:112
+#@ default
+msgid "Plugins"
+msgstr ""
+
+#: roles-raise.php:113
+#@ default
+msgid "Files"
+msgstr ""
+
+#: roles-raise.php:114
+#@ default
+msgid "Users"
+msgstr ""
+
+#: roles-raise.php:115
+#@ roles-raise
+msgid "Miscellaneous"
+msgstr "Verschiedenes"
+
+#: roles-raise.php:137
+#: roles-raise.php:143
+#@ roles-raise
+msgid "You are not allowed to do this."
+msgstr "Sie haben keine Erlaubnis, das zu tun!"
+
+#: roles-raise.php:247
+#@ default
+msgid "Tools"
+msgstr ""
+
+#: roles-raise.php:252
+#: roles-raise.php:280
+#@ roles-raise
+msgid "Create Role"
+msgstr "Neue Rolle erstellen"
+
+#: roles-raise.php:255
+#: roles-raise.php:304
+#@ roles-raise
+msgid "Delete Role"
+msgstr "Rolle löschen"
+
+#: roles-raise.php:259
+#: roles-raise.php:329
+#@ roles-raise
+msgid "Update User accounts"
+msgstr "Benutzerkonten aktualisieren"
+
+#: roles-raise.php:263
+#@ roles-raise
+msgid "Restore Default Roles"
+msgstr "Standard-Rollen wieder herstellen"
+
+#: roles-raise.php:274
+#: roles-raise.php:292
+#@ roles-raise
+msgid "Rolename:"
+msgstr "Rollenname:"
+
+#: roles-raise.php:296
+#@ roles-raise
+msgid "– Select Role –"
+msgstr "– Rolle auswählen –"
+
+#: roles-raise.php:321
+#@ roles-raise
+msgid "After changing a role, You should update all user accounts on your blog."
+msgstr "Nachdem Sie eine Rolle bearbeitet haben, sollten Sie die Benutzerkonten auf Ihrem Blog aktualisieren."
+
+#: roles-raise.php:325
+#@ roles-raise
+msgid "The right time is now."
+msgstr "Jetzt ist ein guter Zeitpunkt dafür."
+
+#: roles-raise.php:339
+#@ roles-raise
+msgid "<strong>Danger Zone:</strong> <br />All your changes will be lost! This is our last warning."
+msgstr "<strong>Gefahrenzone:</strong> <br />Alle Ihre Änderungen werden verloren gehen! Dies ist unsere letzte Warnung."
+
+#: roles-raise.php:345
+#@ roles-raise
+msgid "I know what I am doing."
+msgstr "Ich weiß was ich tue."
+
+#: roles-raise.php:350
+#@ roles-raise
+msgid "Restore Roles"
+msgstr "Rollen wiederherstellen"
+
+#: roles-raise.php:362
+#@ roles-raise
+msgid "Roles and Capabilities"
+msgstr "Rechte & Rollen"
+
+#: roles-raise.php:384
+#@ default
+msgid "New User Default Role"
+msgstr ""
+
+#: roles-raise.php:444
+#@ roles-raise
+msgid "Save Role Settings"
+msgstr "Einstellungen sichern"
+
+#: roles-raise.php:571
+#@ roles-raise
+msgid "Role created."
+msgstr "Neue Rolle erstellt"
+
+#: roles-raise.php:574
+#@ roles-raise
+msgid "Roles updated. Please remember to Update all user accounts as well."
+msgstr "Rollen wirden aktualisiert. Bitte denken Sie daran, die Benutzerkonten ebenfalls zu aktualisieren."
+
+#: roles-raise.php:577
+#@ roles-raise
+msgid "Role deleted."
+msgstr "Rolle gelöscht"
+
+#: roles-raise.php:580
+#@ roles-raise
+msgid "All Roles have been restored to default values."
+msgstr "Alle Rolllen wurden auf die Standardwerte zurückgesetzt."
+
+#: roles-raise.php:583
+#@ roles-raise
+msgid "User accounts have been updated."
+msgstr "Benutzerkonten wurden aktualisiert."
+
+#: roles-raise.php:587
+#@ roles-raise
+msgid "No Rolename specified."
+msgstr "Keine Rolle angegeben."
+
+#: roles-raise.php:590
+#@ roles-raise
+msgid "This Role already exists."
+msgstr "Eine Rolle dieses Namens gibt es schon."
+
+#: roles-raise.php:593
+#@ roles-raise
+msgid "Missing data."
+msgstr "Keine Daten empfangen."
+
+#: roles-raise.php:596
+#@ roles-raise
+msgid "You cannot delete the Adminstrator role."
+msgstr "Sie können die Administrator-Rolle nicht löschen."
+
+#: roles-raise.php:599
+#@ roles-raise
+msgid "This Role does not exist."
+msgstr "Diese Rolle existiert nicht."
+

@@ -1,87 +1,73 @@
 <?php
+/**
+* @package WP_roles_raise
+* @version 0.1
+*/
+
+/*
+Plugin Name: WP Roles Raise
+Plugin URI: https://github.com/mcguffin/wp-roles-raise
+Description: Just another WordPress Role Editor.
+Author: Joern Lund
+Version: 0.0.1
+Author URI: https://github.com/mcguffin
+*/
 
 
 
 
-if ( ! class_exists( 'RolesRaise_Editor' ) ) :
+if ( ! class_exists( 'RolesRaise_UI' ) ) :
 
-class RolesRaise_Editor {
+class RolesRaise_UI {
+	private $role_api;
+	private $editor_title;
 	
-	static function init() {
-		add_action( 'admin_menu', array( __CLASS__ , 'add_roles_menu' ));
-		add_action( 'network_admin_menu', array( __CLASS__ , 'add_default_roles_menu' ));
+	function __construct() {
+		$this->role_api = new Blog_Role_API();
+		$this->editor_title = __('Manage Roles','roles-raise');
+		add_action( 'init' , array( &$this , 'hookup' ) );
+	}
+	
+	function hookup() {
+		if ( is_admin() ) {
+			add_action( 'admin_menu', array( &$this , 'add_roles_menu' ));
 		
-		add_action( 'load-users_page_roles' ,array( __CLASS__ , 'hookup_admin_head'));
-		add_action( 'load-users_page_default_roles' ,array( __CLASS__ , 'hookup_admin_head'));
-
-		add_action( 'load-users_page_roles' ,array( __CLASS__ , 'do_role_actions'));
-		add_action( 'load-users_page_default_roles' ,array( __CLASS__ , 'do_role_actions'));
-
-		register_activation_hook( __FILE__ , array( __CLASS__ , 'plugin_activation' ) );
-		register_uninstall_hook( __FILE__ , array( __CLASS__ , 'plugin_uninstall' ) );
+			add_action( 'load-users_page_roles' ,array( &$this , 'hookup_admin_head'));
+			add_action( 'load-users_page_roles' ,array( &$this , 'do_role_actions'));
+	
+			add_filter( 'update_role_data' , array( &$this , 'update_role_data' ) );
 		
-		add_action('wpmu_new_blog' , array( __CLASS__ , 'set_network_roles_for_blog' ) , 10 ,6 );
-//		add_filter('user_has_cap',array(__CLASS__,'dump'),10,3);
-		load_plugin_textdomain( 'roles-raise' , false, dirname(dirname( plugin_basename( __FILE__ ))) . '/lang');
-	}
-	static function dump( ) {
-		$a = func_get_args();
-		var_dump($a);
-		return $a[0];
-	}
-	static function plugin_activation() {
-		if ( is_multisite() ) {
-			$role_api = new Network_Role_API();
-		} else {
-			$role_api = new Blog_Role_API();
+			add_action( 'role_actions_ui' ,   array( &$this , 'role_action_update_users' ) );
+			add_filter( 'role_action_update-users' ,   array( &$this , 'update_users' ) , 10 ,2 );
+		
+			if ( ! is_multisite() )
+				add_action( 'roles_table_head' ,   array( &$this , 'print_select_default_role' ) , 10 , 2 );
 		}
-		$role_api->backup_default_roles();
 	}
-	static function plugin_uninstall() {
-		if ( is_multisite() ) {
-			$role_api = new Network_Role_API();
-		} else {
-			$role_api = new Blog_Role_API();
-		}
-		$role_api->restore_roles();
+	// action
+	public function hookup_admin_head() {
+		add_action('admin_head',array( &$this , 'admin_head_role_editor'));
 	}
 
+	// filter
+	public function update_role_data( $data ){
+		unset($data['administrator']);
+		return $data;
+	}
 
 	// editors
-	static function add_roles_menu() {
-		add_users_page(__('Manage Roles','roles-raise'), __('Roles','roles-raise'), 'promote_users', 'roles', array( __CLASS__ , 'manage_roles_screen'));
-	}
-	static function add_default_roles_menu(){
-		add_users_page(__('Manage Default Roles','roles-raise'), __('Default Roles','roles-raise'), 'promote_users', 'default_roles', array( __CLASS__ , 'manage_roles_screen'));
+	public function add_roles_menu() {
+		add_users_page(__('Manage Roles','roles-raise'), __('Roles','roles-raise'), 'promote_users', 'roles', array( &$this , 'manage_roles_screen'));
 	}
 	
 	
-	
-	static function get_current_role_api( ) {
-		if ( is_multisite() && is_network_admin() )
-			return new Network_Role_API();
-		else
-			return new Blog_Role_API();
-	}
-	static function get_current_roles( ) {
-		return self::get_current_role_api( )->get_roles();
-	}
-	
-	static function set_network_roles_for_blog( $blog_id ) {
-		$old_blog_id = get_current_blog_id();
-		switch_to_blog( $blog_id );
-		$role_api = new Blog_Role_API();
-		$role_api->restore_roles();
-		switch_to_blog( $old_blog_id );
-	}
-	
-	static function get_cap_groups( ) {
+	public function get_cap_groups( ) {
 		global $wp_roles , $wpdb;
 		$existing_caps = array();
 		$resorted_existing_caps = array();
 		
 
-		$roles = self::get_current_role_api( )->get_roles();
+		$roles = $this->role_api->get_roles();
 
 		foreach ($roles as $role => $role_array ) {
 			foreach ( $role_array['capabilities'] as $cap => $permit ) {
@@ -114,7 +100,7 @@ class RolesRaise_Editor {
 		return $resorted_existing_caps;
 	}
 	
-	static function do_role_actions() {
+	public function do_role_actions() {
 		global $wp_roles,$wpdb;
 
 		if ( empty( $_POST ) )
@@ -125,14 +111,17 @@ class RolesRaise_Editor {
 
 		if ( ! isset( $_REQUEST['action'] ) )
 			wp_redirect( $redirect ) & die();
+
+		$action = $_REQUEST['action'];
 		
-		if ( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], $_REQUEST['action'] ) )
+		if ( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], $action ) )
 			wp_die( __('You are not allowed to do this.' ,'roles-raise') );
 		
-
-		$role_api = self::get_current_role_api( );
-	
-		switch ( $_REQUEST['action'] ) {
+		$role_api = $this->role_api;
+		
+		$redirect = apply_filters_ref_array( "role_action_$action" , array( $redirect , &$role_api ) );
+		
+		switch ( $action ) {
 			case 'restore-roles':
 				$role_api->restore_roles( );
 				$redirect = add_query_arg( array('message' => '4') , $redirect );
@@ -182,47 +171,42 @@ class RolesRaise_Editor {
 					$redirect = add_query_arg( array('message' => '15') , $redirect );
 					break;
 				}
-				if ( ! is_multisite() || ! is_network_admin() )
-					unset($_REQUEST['caps']['administrator']);
 				
-				$role_api->update_roles( $_REQUEST['caps'] );
+				$role_data = apply_filters( 'update_role_data' , $_REQUEST['caps'] );
 				
-				//
 				if (  ! is_multisite() || is_network_admin() )
 					$role_api->update_default_role( $_REQUEST['default_role'] );
-				
-				
+		
 
+				
+				$role_api->update_roles( $role_data );
+				
 				$redirect = add_query_arg( array('message' => '2' ) , $redirect ); // roles updated
-				break;
-			case 'update-users':
-				// update all user levels
-				$role_api->after_update_roles( );
-				$redirect = add_query_arg( array('message' => '5' ) , $redirect ); // roles updated
 				break;
 		}
 		wp_redirect( $redirect ) & die();
 	}
 	
-
+	public function update_users( $redirect , $role_api ) {
+		$role_api->after_update_roles( );
+		return add_query_arg( array('message' => '5' ) , $redirect ); // users updated
+	}
 	
-	static function manage_roles_screen( $a ) {
+	public function manage_roles_screen( $a ) {
 		global $wp_roles;
 
-		$role_api = self::get_current_role_api( );
-		$resorted_existing_caps = self::get_cap_groups();
+		$role_api = $this->role_api;
+		$resorted_existing_caps = $this->get_cap_groups();
 		$roles = $role_api->get_roles();
 		$default_role = $role_api->get_default_role();
 		
 		?><div id="edit-roles" class="wrap"><?php
 		?><div id="icon-users" class="icon32"><br></div><?php
 		?><h2><?php
-			if ( is_network_admin() )
-				_e('Manage Default Roles','roles-raise');
-			else 
-				_e('Manage Roles','roles-raise');
+			echo $this->editor_title;
 		?></h2><?php
-		self::_put_message( );
+		
+		$this->_put_message( );
 	
 
 
@@ -292,31 +276,8 @@ class RolesRaise_Editor {
 					?></form><?php
 				?></td><?php
 				
-				if ( ! is_multisite() || ! is_network_admin() ) {
-					?><td><?php
-						?><form method="post"><?php
-							$action = 'update-users';
-							wp_nonce_field( $action , '_wpnonce' , true , true );
-							?><input type="hidden" name="action" value="<?php echo $action ?>"  /><?php
-							
-							$is_due = isset( $_REQUEST['message'] ) && ( $_REQUEST['message'] == 2 ||  $_REQUEST['message'] == 4); // restored || updated
-							
-							if ( $is_due ) {
-								?><div class="message"><?php
-							}
-							?><p class="description"><?php
-								_e('After changing a role, You should update all user accounts on your blog.','roles-raise') ;
-							?></p><?php 
-							if ( $is_due ) {
-									?><p><strong><?php 
-										_e('The right time is now.','roles-raise') ;
-									?></strong></p><?php 
-								?></div><?php
-							}
-							submit_button( __('Update User accounts','roles-raise'), 'primary', 'delete-role' , true );
-						?></form><?php
-					?></td><?php
-				}
+				do_action( 'role_actions_ui' );
+				
 				?><td class="danger"><?php
 					?><form method="post"><?php
 						$action = 'restore-roles';
@@ -362,29 +323,8 @@ class RolesRaise_Editor {
 			?><input type="hidden" name="caps[<?php echo $role ?>][name]" value="<?php echo $role_array['name'] ?>" /><?php
 		}
 		?><table class="form-table roles"><?php
-		
+			do_action_ref_array( 'roles_table_head' , array( &$role_api , $roles ) );
 			// set default role
-			if ( ! is_multisite() || is_network_admin() ) {
-				$default_role = self::get_current_role_api( )->get_default_role();
-				?><tr class="roles-head"><?php
-					?><th class="title"><?php
-						_e('New User Default Role');
-					?></th><?php
-					foreach ($roles as $role => $role_array ) {
-						?><th class="rolename"><?php
-							if ( $role != 'administrator' ) {
-								?><input id="default-role-<?php echo $role ?>" type="radio" name="default_role"  value="<?php echo $role ?>" <?php checked($default_role,$role,true) ?> /><?php
-								?><label for="default-role-<?php echo $role ?>"><?php
-									echo translate_user_role( $role_array["name"] );
-								?></label><?php
-								?><br /><?php
-							} else {
-								//echo translate_user_role( $role_array["name"] );
-							}
-						?></th><?php
-					}
-				?></tr><?php
-			}
 
 			?><tbody><?php
 		
@@ -395,7 +335,7 @@ class RolesRaise_Editor {
 					?></th><?php
 				?></tr><?php
 				$group_slug = sanitize_title( $groupname );
-				self::print_roles_head( $group_slug );
+				$this->print_roles_head( $group_slug );
 
 				foreach ($caps as $cap => $cap_role_array ) {
 					if ( $odd ) {
@@ -432,9 +372,33 @@ class RolesRaise_Editor {
 		?></form><?php
 		
 	}
-
-	static function print_roles_head( $group_slug = '' ) {
-		$roles = self::get_current_roles();
+	public function role_action_update_users( ) {
+		?><td><?php
+			?><form method="post"><?php
+				$action = 'update-users';
+				wp_nonce_field( $action , '_wpnonce' , true , true );
+				?><input type="hidden" name="action" value="<?php echo $action ?>"  /><?php
+				
+				$is_due = isset( $_REQUEST['message'] ) && ( $_REQUEST['message'] == 2 ||  $_REQUEST['message'] == 4); // restored || updated
+				
+				if ( $is_due ) {
+					?><div class="message"><?php
+				}
+				?><p class="description"><?php
+					_e('After changing a role, You should update all user accounts on your blog.','roles-raise') ;
+				?></p><?php 
+				if ( $is_due ) {
+						?><p><strong><?php 
+							_e('The right time is now.','roles-raise') ;
+						?></strong></p><?php 
+					?></div><?php
+				}
+				submit_button( __('Update User accounts','roles-raise'), 'primary', 'delete-role' , true );
+			?></form><?php
+		?></td><?php
+	}
+	public function print_roles_head( $group_slug = '' ) {
+		$roles = $this->role_api->get_roles();
 		?><tr class="roles-head"><?php
 			?><th class="title"><?php
 				// _e('Capability / Role','roles-raise');
@@ -454,12 +418,30 @@ class RolesRaise_Editor {
 			}
 		?></tr><?php
 	}
-
-	static function hookup_admin_head() {
-		add_action('admin_head',array( __CLASS__ , 'admin_head_role_editor'));
+	public function print_select_default_role( &$role_api , $roles ){
+		$default_role = $role_api->get_default_role();
+		?><tr class="roles-head"><?php
+			?><th class="title"><?php
+				_e('New User Default Role');
+			?></th><?php
+			foreach ($roles as $role => $role_array ) {
+				?><th class="rolename"><?php
+					if ( $role != 'administrator' ) {
+						?><input id="default-role-<?php echo $role ?>" type="radio" name="default_role"  value="<?php echo $role ?>" <?php checked($default_role,$role,true) ?> /><?php
+						?><label for="default-role-<?php echo $role ?>"><?php
+							echo translate_user_role( $role_array["name"] );
+						?></label><?php
+						?><br /><?php
+					} else {
+						//echo translate_user_role( $role_array["name"] );
+					}
+				?></th><?php
+			}
+		?></tr><?php
 	}
+	
 
-	static function admin_head_role_editor( ) {
+	public function admin_head_role_editor( ) {
 		?><style type="text/css">
 		#edit-roles {
 			border-collapse:collapse;
@@ -548,7 +530,7 @@ class RolesRaise_Editor {
 		</script><?php
 	}
 
-	private static function _put_message( ) {
+	private function _put_message( ) {
 		if ( ! isset( $_REQUEST['message'] ) )
 			return;
 			
@@ -592,188 +574,40 @@ class RolesRaise_Editor {
 		if ( $message )
 			printf( $message_wrap , $message );
 	}
-	
 }
-RolesRaise_Editor::init();
 
 endif;
 
 
 
-if ( ! interface_exists( 'Role_API' ) ) :
-
-interface Role_API {
-
-	function add_role( $slug , $name );
-	function remove_role( $slug );
-	function has_role( $slug );
-
-	function update_roles( $roles_array );
-	function after_update_roles( );
-
-	function get_default_role();
-	function update_default_role( $slug );
-
-	function backup_default_roles( );
-	function restore_roles( );
-
-}
-endif;
-
-
-if ( ! class_exists( 'Network_Role_API' ) ) :
-
-class Network_Role_API implements Role_API {
-	private $_roles;
-	private $_role_key;
-	
-	function __construct( ) {
-		global $wpdb;
-		$this->_role_key = $wpdb->prefix . 'default_roles';
-		$this->_roles = get_site_option( $this->_role_key );
-	}
-	
-	function has_role( $slug ) {
-		return array_key_exists( $slug , $this->_roles );
-	}
-	function add_role( $slug , $name ) {
-		$this->_roles[$slug] = array(
-			'name' => $name,
-			'capabilities' => array(),
-		);
-		$this->_store();
-	}
-	function remove_role( $slug ) {
-		unset($this->_roles[$slug]);
-		$this->_store();
-	}
-	function update_roles( $roles_array ) {
-		$this->_roles = $roles_array;
-		$this->_store();
-	}
-	function after_update_roles() {
-	}
-
-	function restore_roles() {
-		// get wp defaults, set.
-		$this->_roles = get_site_option( 'wp_native_roles' );
-		$this->_store();
-	}
-	function get_roles() {
-		return $this->_roles;
-	}
-	function backup_default_roles() {
-		// store native wp
-		global $wp_roles;
-		if ( ! get_site_option( 'wp_native_roles' ) )
-			update_site_option( 'wp_native_roles' , $wp_roles->roles );
-	}
-	function get_default_role() {
-		global $wpdb;
-		return get_site_option( $wpdb->prefix . 'default_role' );
-	}
-	function update_default_role( $slug ) {
-		global $wpdb;
-		return update_site_option( $wpdb->prefix . 'default_role' , $slug );
-	}
-	
-	
-	private function _store( ) {
-		update_site_option( $this->_role_key , $this->_roles );
-	}
-	
-}
-endif;
-
-
-if ( ! class_exists( 'Blog_Role_API' ) ) :
-
-class Blog_Role_API implements Role_API {
-	
-	function has_role( $slug ) {
-		return ! is_null( get_role( $slug ) );
-	}
-	function add_role( $slug , $name ) {
-		add_role( $slug , $name );
-	}
-	function remove_role( $slug ) {
-		remove_role( $slug );
-	}
-	function update_roles( $roles_array ) {
-		global $wp_roles;
-		foreach ( $roles_array as $rolename => $role ) {
-			if ( ! $this->has_role( $rolename ) )
-				continue;
-			$current_role = get_role( $rolename );
+if ( ! class_exists( 'RolesRaise_NetworkUI' ) ) :
+	class RolesRaise_NetworkUI extends RolesRaise_UI {
+		
+		public function __construct() {
+			parent::__construct();
+			$this->role_api = new Network_Role_API();
+			$this->editor_title = __('Manage Default Roles','roles-raise');
+		}
+		
+		public function hookup() {
+			if ( is_network_admin() ) {
+				add_action( 'network_admin_menu', array( &$this , 'add_default_roles_menu' ));
+				add_action( 'load-users_page_default_roles' ,array( &$this , 'do_role_actions'));
 			
-			foreach ( $role['capabilities'] as $cap => $grant ) {
-				if ( (bool) $grant || $role == 'administrator' )
-					$current_role->add_cap( $cap , (bool) $grant );
-				else if ( $current_role->has_cap( $cap ) )
-					$current_role->remove_cap( $cap );
+				// style and script
+				add_action( 'load-users_page_default_roles' ,array( &$this , 'hookup_admin_head'));
+
+				add_action( 'roles_table_head' ,   array( &$this , 'print_select_default_role' ) , 10 , 2 );
 			}
 		}
-	}
-	function after_update_roles() {
-		global $wpdb;
-		$count_users = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->users");
-		
-		$users = get_users();
-		foreach ( $users as $user ) {
-			$user->update_user_level_from_caps();
-		}
-	}
-	
-	function get_roles() {
-		global $wp_roles;
-		return $wp_roles->roles;
-	}
-	
-	function get_default_role() {
-		return get_option( 'default_role' );
-	}
-	function update_default_role( $slug ) {
-		update_option( 'default_role' , $slug );
-	}
 
-	
-	
-	
-	function restore_roles() {
-		// get wp defaults, set.
-		if ( is_multisite() ) { // network context
-			$roles_api = new Network_Role_API();
-			$restore_roles = $roles_api->get_roles();
-			$restore_default_role = $roles_api->get_default_role();
-		} else {
-			$restore_roles = get_option( 'wp_native_roles' );
-			$restore_default_role =  get_option('wp_native_default_role');
+		public function add_default_roles_menu(){
+			add_users_page(__('Manage Default Roles','roles-raise'), __('Default Roles','roles-raise'), 'promote_users', 'default_roles', array( &$this , 'manage_roles_screen'));
 		}
-		foreach ($this->get_roles() as $slug => $role )
-			$this->remove_role( $slug );
-		
-		foreach ( $restore_roles as $slug => $role )
-			$this->add_role( $slug , $role['name'] );
-		
-		$this->update_roles($restore_roles);
-		
-		update_option( 'default_role' , $restore_default_role );
-	}
-	function backup_default_roles() {
-		// store native wp
-		if ( ! is_multisite() ) {
-			if ( ! get_option( 'wp_native_roles' ) )
-				update_option( 'wp_native_roles' , $wp_roles->roles );
-			if ( ! get_option( 'wp_native_default_role' ) )
-				update_option( 'wp_native_default_role' , get_option('default_role') );
-		}
-	}
-	
 
-}
+		
+	}
 endif;
-
-
 
 
 ?>
