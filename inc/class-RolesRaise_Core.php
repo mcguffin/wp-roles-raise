@@ -12,7 +12,9 @@ if ( ! class_exists( 'RolesRaise_Core' ) ) :
 class RolesRaise_Core {
 	
 	static function init() {
-		add_action('wpmu_new_blog' , array( __CLASS__ , 'set_network_roles_for_blog' ) , 10 ,6 );
+		if ( is_network_admin() ) {
+			add_action('wpmu_new_blog' , array( __CLASS__ , 'set_network_roles_for_blog' ) , 10 ,6 );
+		}
 		load_plugin_textdomain( 'roles-raise' , false, dirname(dirname(  plugin_basename( __FILE__ ) )) . '/languages');
 	}
 
